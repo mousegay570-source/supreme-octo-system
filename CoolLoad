@@ -1,3 +1,32 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RE = ReplicatedStorage:WaitForChild("RE")
+
+local NameTextEvent = RE:WaitForChild("1RPNam1eTex1t")
+local NameColorEvent = RE:WaitForChild("1RPNam1eColo1r")
+
+-- FunÃƒÂ§ÃƒÂ£o para disparar eventos com seguranÃƒÂ§a 
+local function fireEvent(event, ...)
+    if event then
+        event:FireServer(...)
+    else
+        warn("Evento nÃƒÂ£o encontrado:", event)
+    end
+end
+
+-- Nome de RolePlay
+fireEvent(NameTextEvent, "RolePlayName", "Xavier Hub by AstraX")
+
+-- Cor do Nome (preto)
+fireEvent(NameColorEvent, "PickingRPNameColor", Color3.new(255, 140, 0))
+
+-- Bio de RolePlay
+fireEvent(NameTextEvent, "RolePlayBio", "Nice script")
+
+-- Cor da Bio (vermelho)
+fireEvent(NameColorEvent, "PickingRPBioColor", Color3.new(102, 51, 153))
+
+
+
 -- Xavier Hub Fake Loading UI
 -- LocalScript - Taruh di StarterPlayerScripts atau StarterGui
 -- Menggunakan CoreGui agar tidak bisa di-delete player
