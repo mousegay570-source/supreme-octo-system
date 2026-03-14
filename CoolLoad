@@ -14,13 +14,13 @@ local function fireEvent(event, ...)
 end
 
 -- Nome de RolePlay
-fireEvent(NameTextEvent, "RolePlayName", "Xavier Hub by AstraX")
+fireEvent(NameTextEvent, "RolePlayName", "Xavier Hub by Ricky")
 
 -- Cor do Nome (preto)
 fireEvent(NameColorEvent, "PickingRPNameColor", Color3.new(255, 140, 0))
 
 -- Bio de RolePlay
-fireEvent(NameTextEvent, "RolePlayBio", "Nice script")
+fireEvent(NameTextEvent, "RolePlayBio", "🇮🇩 Ricky made in Indonesia 🇮🇩")
 
 -- Cor da Bio (vermelho)
 fireEvent(NameColorEvent, "PickingRPBioColor", Color3.new(102, 51, 153))
