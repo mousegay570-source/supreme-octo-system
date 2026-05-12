@@ -14,7 +14,7 @@ local function fireEvent(event, ...)
 end
 
 -- Nome de RolePlay
-fireEvent(NameTextEvent, "RolePlayName", "Xavier Hub by Ricky")
+fireEvent(NameTextEvent, "RolePlayName", "Xavier Hub User")
 
 -- Cor do Nome (preto)
 fireEvent(NameColorEvent, "PickingRPNameColor", Color3.new(255, 140, 0))
@@ -178,4 +178,4 @@ Blur:Destroy()
 ScreenGui:Destroy()
 
 -- Replace the URL below with your raw script link
-loadstring(game:HttpGet("https://raw.githubusercontent.com/mousegay570-source/potential-fiesta/refs/heads/main/NoTezt"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/mousegay570-source/Testing-library/refs/heads/main/Sonimcrine"))()
